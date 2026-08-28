@@ -1,8 +1,20 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.router import api_router
 from app.core.config import settings
+from app.db.mongodb import close_mongodb_connection, connect_to_mongodb
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await connect_to_mongodb()
+
+    yield
+
+    await close_mongodb_connection()
 
 
 app = FastAPI(
@@ -12,6 +24,7 @@ app = FastAPI(
         "Backend API for Udyog Setu — an SIH 2026 prototype for "
         "industrial approvals, compliance guidance, and government support services."
     ),
+    lifespan=lifespan,
 )
 
 

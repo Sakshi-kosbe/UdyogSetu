@@ -3,25 +3,24 @@ from fastapi.testclient import TestClient
 from app.main import app
 
 
-client = TestClient(app)
-
-
 def test_root_endpoint():
-    response = client.get("/")
+    with TestClient(app, raise_server_exceptions=False) as client:
+        response = client.get("/")
 
-    assert response.status_code == 200
+        assert response.status_code == 200
 
-    data = response.json()
+        data = response.json()
 
-    assert data["message"] == "Udyog Setu API is running"
+        assert data["message"] == "Udyog Setu API is running"
 
 
 def test_health_endpoint():
-    response = client.get("/api/v1/health/")
+    with TestClient(app, raise_server_exceptions=False) as client:
+        response = client.get("/api/v1/health/")
 
-    assert response.status_code == 200
+        assert response.status_code == 200
 
-    data = response.json()
+        data = response.json()
 
-    assert data["status"] == "healthy"
-    assert data["service"] == "udyog-setu-api"
+        assert data["status"] == "healthy"
+        assert data["service"] == "udyog-setu-api"

@@ -6,10 +6,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     APP_NAME: str = "Udyog Setu API"
     APP_VERSION: str = "0.1.0"
+    API_V1_PREFIX: str = "/api/v1"
+
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
 
-    API_V1_PREFIX: str = "/api/v1"
+    MONGODB_URL: str = "mongodb://localhost:27017"
+    MONGODB_DB_NAME: str = "udyogsetu"
 
     FRONTEND_ORIGINS: str = "http://localhost:3000"
 
@@ -17,6 +20,7 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         case_sensitive=True,
+        extra="ignore",
     )
 
     @property
