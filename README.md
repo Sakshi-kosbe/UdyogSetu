@@ -451,24 +451,6 @@ Key considerations include:
 
 ---
 
-# 🗺️ Roadmap
-
-* [x] Problem Research
-* [x] System Architecture Design
-* [x] Tech Stack Selection
-* [ ] Frontend Development
-* [ ] FastAPI Backend Development
-* [ ] MongoDB Integration
-* [ ] Authentication & User Roles
-* [ ] Approval Workflow Module
-* [ ] Document Management Module
-* [ ] AI/RAG Integration
-* [ ] Government Scheme Discovery
-* [ ] Analytics Dashboard
-* [ ] Testing
-* [ ] Docker Deployment
-
----
 
 # 📚 Research Focus
 
@@ -498,15 +480,7 @@ The project is inspired by research in:
 
 # 👨‍💻 Team
 
-**Team Name:** [Your Team Name]
-
-| Name     | Role                   |
-| -------- | ---------------------- |
-| Member 1 | Frontend Developer     |
-| Member 2 | Backend Developer      |
-| Member 3 | AI/ML Developer        |
-| Member 4 | Database & Integration |
-| Member 5 | Research & Testing     |
+**Team Name:** [Bug Busters]
 
 ---
 
