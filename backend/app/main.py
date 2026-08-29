@@ -6,11 +6,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.router import api_router
 from app.core.config import settings
 from app.db.mongodb import close_mongodb_connection, connect_to_mongodb
+from app.db.seed_requirements import seed_requirements
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await connect_to_mongodb()
+
+    # Seed regulatory requirements after MongoDB connection
+    await seed_requirements()
 
     yield
 

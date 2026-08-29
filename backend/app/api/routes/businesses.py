@@ -10,6 +10,8 @@ from app.schemas.business import (
     BusinessResponse,
     BusinessUpdate,
 )
+from app.services.requirement_matcher import discover_requirements_for_business
+
 
 router = APIRouter(
     prefix="/businesses",
@@ -147,3 +149,54 @@ async def delete_business(business_id: str):
         )
 
     return None
+
+
+@router.get("/{business_id}/requirements")
+async def discover_business_requirements(
+    business_id: str,
+):
+    """
+    Discover potentially applicable requirements for a business.
+    """
+
+    if not ObjectId.is_valid(business_id):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid business ID",
+        )
+
+    db = get_database()
+
+    business = await db.businesses.find_one(
+        {"_id": ObjectId(business_id)}
+    )
+
+    if business is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Business not found",
+        )
+
+    business["id"] = str(business["_id"])
+    del business["_id"]
+
+    matches = await discover_requirements_for_business(
+        business
+    )
+
+    return {
+        "business": {
+            "id": business["id"],
+            "name": business["name"],
+            "industry": business["industry"],
+            "business_size": business["business_size"],
+            "activity": business["activity"],
+            "location": business["location"],
+        },
+        "matched_requirements": matches,
+        "total_matches": len(matches),
+        "note": (
+            "Prototype guidance based on structured rules. "
+            "This does not constitute a statutory decision."
+        ),
+    }
