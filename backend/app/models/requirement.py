@@ -1,3 +1,4 @@
+from app.models.rule import Rule
 from pydantic import BaseModel, Field
 from typing import List, Optional
 
@@ -33,3 +34,4 @@ class RequirementCreate(RequirementBase):
 
 class RequirementResponse(RequirementBase):
     id: str
+    rules: list[Rule] = Field(default_factory=list)
