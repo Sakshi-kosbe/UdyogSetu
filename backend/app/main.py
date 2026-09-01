@@ -10,6 +10,9 @@ from app.db.seed_requirements import seed_requirements
 from app.db.seed_rules import seed_rules
 from app.api.routes.documents import router as documents_router
 from app.api.routes.applications import router as applications_router
+from app.api.routes.compliance import (
+    router as compliance_router,
+)
 
 
 @asynccontextmanager
@@ -67,3 +70,4 @@ app.include_router(
 )
 
 app.include_router(applications_router)
+app.include_router(compliance_router)
