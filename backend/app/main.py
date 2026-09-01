@@ -13,6 +13,7 @@ from app.api.routes.applications import router as applications_router
 from app.api.routes.compliance import (
     router as compliance_router,
 )
+from app.api.routes.officer import router as officer_router
 
 
 @asynccontextmanager
@@ -71,3 +72,4 @@ app.include_router(
 
 app.include_router(applications_router)
 app.include_router(compliance_router)
+app.include_router(officer_router)
