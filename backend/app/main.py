@@ -8,6 +8,7 @@ from app.core.config import settings
 from app.db.mongodb import close_mongodb_connection, connect_to_mongodb
 from app.db.seed_requirements import seed_requirements
 from app.db.seed_rules import seed_rules
+from app.api.routes.documents import router as documents_router
 
 
 @asynccontextmanager
@@ -56,4 +57,10 @@ async def root() -> dict[str, str]:
 app.include_router(
     api_router,
     prefix=settings.API_V1_PREFIX,
+)
+
+
+app.include_router(
+    documents_router,
+    prefix="/api/v1"
 )
