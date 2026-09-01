@@ -2,6 +2,9 @@ from fastapi import APIRouter, HTTPException, Query
 from bson import ObjectId
 
 from app.db.mongodb import mongodb
+from app.services.requirement_service import (
+    get_applicable_requirements,
+)
 
 
 router = APIRouter(
@@ -13,7 +16,11 @@ router = APIRouter(
 def serialize_requirement(requirement: dict) -> dict:
     """Convert MongoDB document into JSON-safe response."""
 
-    requirement["id"] = str(requirement.pop("_id", ""))
+    requirement = dict(requirement)
+
+    requirement["id"] = str(
+        requirement.pop("_id", "")
+    )
 
     return requirement
 
@@ -22,7 +29,7 @@ def serialize_requirement(requirement: dict) -> dict:
 async def get_requirements(
     industry: str | None = Query(
         default=None,
-        description="Filter requirements by industry"
+        description="Filter requirements by industry",
     ),
 ):
     """
@@ -42,7 +49,28 @@ async def get_requirements(
             "$in": [industry]
         }
 
-    requirements = await collection.find(query).to_list(length=100)
+    requirements = await collection.find(
+        query
+    ).to_list(length=100)
+
+    return [
+        serialize_requirement(requirement)
+        for requirement in requirements
+    ]
+
+
+@router.post("/evaluate")
+async def evaluate_requirements(
+    business: dict,
+):
+    """
+    Evaluate a business against active regulatory rules
+    and return the applicable requirements.
+    """
+
+    requirements = await get_applicable_requirements(
+        business
+    )
 
     return [
         serialize_requirement(requirement)
@@ -51,7 +79,9 @@ async def get_requirements(
 
 
 @router.get("/{requirement_id}")
-async def get_requirement(requirement_id: str):
+async def get_requirement(
+    requirement_id: str,
+):
     """
     Get a single regulatory requirement by MongoDB ObjectId.
     """
@@ -61,7 +91,7 @@ async def get_requirement(requirement_id: str):
     if not ObjectId.is_valid(requirement_id):
         raise HTTPException(
             status_code=400,
-            detail="Invalid requirement ID"
+            detail="Invalid requirement ID",
         )
 
     requirement = await collection.find_one(
@@ -74,7 +104,7 @@ async def get_requirement(requirement_id: str):
     if not requirement:
         raise HTTPException(
             status_code=404,
-            detail="Requirement not found"
+            detail="Requirement not found",
         )
 
     return serialize_requirement(requirement)
