@@ -9,6 +9,7 @@ from app.db.mongodb import close_mongodb_connection, connect_to_mongodb
 from app.db.seed_requirements import seed_requirements
 from app.db.seed_rules import seed_rules
 from app.api.routes.documents import router as documents_router
+from app.api.routes.applications import router as applications_router
 
 
 @asynccontextmanager
@@ -64,3 +65,5 @@ app.include_router(
     documents_router,
     prefix="/api/v1"
 )
+
+app.include_router(applications_router)
