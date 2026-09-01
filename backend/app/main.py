@@ -7,14 +7,18 @@ from app.api.router import api_router
 from app.core.config import settings
 from app.db.mongodb import close_mongodb_connection, connect_to_mongodb
 from app.db.seed_requirements import seed_requirements
+from app.db.seed_rules import seed_rules
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await connect_to_mongodb()
 
-    # Seed regulatory requirements after MongoDB connection
+    # Seed requirements
     await seed_requirements()
+
+    # Seed rules
+    await seed_rules()
 
     yield
 
@@ -25,7 +29,7 @@ app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
     description=(
-        "Backend API for Udyog Setu — an SIH 2026 prototype for "
+        "Backend API for Udyog Setu - an SIH 2026 prototype for "
         "industrial approvals, compliance guidance, and government support services."
     ),
     lifespan=lifespan,
