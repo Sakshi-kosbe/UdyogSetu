@@ -22,9 +22,11 @@ export default function HomePage() {
 
             <Link href="/businesses">Businesses</Link>
 
-            <a href="#features">Features</a>
+            <Link href="/requirements">Requirements</Link>
 
-            <a href="#workflow">Workflow</a>
+            <Link href="/compliance">Compliance</Link>
+
+            <Link href="/schemes">Schemes</Link>
           </div>
 
           <Link href="/businesses" className="nav-button">
@@ -48,10 +50,10 @@ export default function HomePage() {
             </h2>
 
             <p className="hero-description">
-              Udyog Setu helps businesses understand what
-              requirements may apply to them, prepare documents,
-              track compliance, and discover relevant government
-              support services.
+              Udyog Setu helps businesses understand which
+              industrial requirements may apply to them, prepare
+              for applications, track compliance obligations and
+              discover relevant government support schemes.
             </p>
 
             <div className="hero-actions">
@@ -74,8 +76,9 @@ export default function HomePage() {
               <span className="note-icon">✓</span>
 
               <p>
-                Rules determine applicability.
-                AI assists with guidance and explanations.
+                Structured rules determine applicability.
+                Intelligent assistance helps explain and guide
+                the user through the process.
               </p>
             </div>
           </div>
@@ -105,11 +108,15 @@ export default function HomePage() {
                   </div>
 
                   <div className="sidebar-item">
-                    ◈
+                    🔍
                   </div>
 
                   <div className="sidebar-item">
                     ✓
+                  </div>
+
+                  <div className="sidebar-item">
+                    🎯
                   </div>
 
                   <div className="sidebar-item">
@@ -120,7 +127,7 @@ export default function HomePage() {
                 <div className="dashboard-main">
                   <div className="dashboard-heading">
                     <div>
-                      <p>WELCOME BACK</p>
+                      <p>WELCOME TO</p>
 
                       <h3>
                         Your Industrial Journey
@@ -128,7 +135,7 @@ export default function HomePage() {
                     </div>
 
                     <div className="profile-circle">
-                      B
+                      U
                     </div>
                   </div>
 
@@ -159,13 +166,13 @@ export default function HomePage() {
 
                     <div className="dashboard-stat">
                       <span className="stat-icon">
-                        📄
+                        🎯
                       </span>
 
                       <div>
-                        <strong>12</strong>
+                        <strong>5</strong>
 
-                        <p>Documents</p>
+                        <p>Possible Schemes</p>
                       </div>
                     </div>
                   </div>
@@ -194,9 +201,9 @@ export default function HomePage() {
                         Suggested Next Steps
                       </h4>
 
-                      <span>
+                      <Link href="/requirements">
                         View All →
-                      </span>
+                      </Link>
                     </div>
 
                     <div className="requirement-row">
@@ -206,12 +213,13 @@ export default function HomePage() {
 
                       <div>
                         <strong>
-                          Review Required Approvals
+                          Review Applicable Requirements
                         </strong>
 
                         <p>
-                          Check potentially applicable
-                          industrial requirements.
+                          Check industrial approvals and
+                          registrations that may apply to your
+                          business.
                         </p>
                       </div>
                     </div>
@@ -227,7 +235,8 @@ export default function HomePage() {
                         </strong>
 
                         <p>
-                          Your business information is ready.
+                          Your business information is ready for
+                          requirement discovery.
                         </p>
                       </div>
                     </div>
@@ -256,14 +265,18 @@ export default function HomePage() {
           </h2>
 
           <p>
-            From discovering requirements to tracking compliance,
-            Udyog Setu provides structured guidance throughout
-            the business journey.
+            From understanding business requirements to tracking
+            compliance and discovering support schemes, Udyog
+            Setu provides structured guidance throughout the
+            industrial journey.
           </p>
         </div>
 
         <div className="features-grid">
-          <article className="feature-card">
+          <Link
+            href="/businesses"
+            className="feature-card feature-link"
+          >
             <div className="feature-icon">
               🏢
             </div>
@@ -273,12 +286,20 @@ export default function HomePage() {
             </h3>
 
             <p>
-              Create a structured business profile that helps
-              determine relevant industrial requirements.
+              Create and manage a structured business profile
+              that becomes the foundation for personalized
+              guidance.
             </p>
-          </article>
 
-          <article className="feature-card">
+            <span className="feature-action">
+              Manage Business →
+            </span>
+          </Link>
+
+          <Link
+            href="/requirements"
+            className="feature-card feature-link"
+          >
             <div className="feature-icon">
               🔍
             </div>
@@ -289,9 +310,14 @@ export default function HomePage() {
 
             <p>
               Identify potentially applicable approvals,
-              registrations and regulatory requirements.
+              registrations and industrial requirements based
+              on structured business information.
             </p>
-          </article>
+
+            <span className="feature-action">
+              Discover Requirements →
+            </span>
+          </Link>
 
           <article className="feature-card">
             <div className="feature-icon">
@@ -303,12 +329,16 @@ export default function HomePage() {
             </h3>
 
             <p>
-              Understand document requirements and prepare
-              applications before visiting official portals.
+              Understand the documents that may be required
+              and prepare application information before
+              proceeding to official portals.
             </p>
           </article>
 
-          <article className="feature-card">
+          <Link
+            href="/compliance"
+            className="feature-card feature-link"
+          >
             <div className="feature-icon">
               ✓
             </div>
@@ -318,12 +348,19 @@ export default function HomePage() {
             </h3>
 
             <p>
-              Track compliance records, upcoming renewals,
+              Monitor compliance records, upcoming renewals,
               deadlines and important business obligations.
             </p>
-          </article>
 
-          <article className="feature-card">
+            <span className="feature-action">
+              Track Compliance →
+            </span>
+          </Link>
+
+          <Link
+            href="/schemes"
+            className="feature-card feature-link"
+          >
             <div className="feature-icon">
               🎯
             </div>
@@ -334,9 +371,13 @@ export default function HomePage() {
 
             <p>
               Discover government schemes that may be relevant
-              to your business profile and industry.
+              to your business profile, sector and location.
             </p>
-          </article>
+
+            <span className="feature-action">
+              Explore Schemes →
+            </span>
+          </Link>
 
           <article className="feature-card">
             <div className="feature-icon">
@@ -348,8 +389,9 @@ export default function HomePage() {
             </h3>
 
             <p>
-              Get clear explanations and guidance while keeping
-              regulatory decisions based on structured rules.
+              Receive clear explanations and structured
+              guidance while keeping regulatory applicability
+              decisions based on defined rules.
             </p>
           </article>
         </div>
@@ -370,6 +412,12 @@ export default function HomePage() {
             Your journey from business setup
             to compliance readiness
           </h2>
+
+          <p>
+            Udyog Setu connects the important stages of the
+            industrial journey into one structured guidance
+            workflow.
+          </p>
         </div>
 
         <div className="workflow-grid">
@@ -381,7 +429,8 @@ export default function HomePage() {
             </h3>
 
             <p>
-              Add your business details and industrial activity.
+              Add your business details, industry, location
+              and industrial activity.
             </p>
           </div>
 
@@ -393,7 +442,8 @@ export default function HomePage() {
             </h3>
 
             <p>
-              Understand what may apply to your business.
+              Use structured rules to identify requirements
+              that may apply to your business.
             </p>
           </div>
 
@@ -401,11 +451,12 @@ export default function HomePage() {
             <span>03</span>
 
             <h3>
-              Prepare Documents
+              Prepare & Review
             </h3>
 
             <p>
-              Check application readiness before proceeding.
+              Understand required information and prepare
+              your business for the next application steps.
             </p>
           </div>
 
@@ -417,7 +468,84 @@ export default function HomePage() {
             </h3>
 
             <p>
-              Monitor obligations, renewals and next steps.
+              Monitor obligations, upcoming renewals and
+              important compliance deadlines.
+            </p>
+          </div>
+
+          <div className="workflow-step">
+            <span>05</span>
+
+            <h3>
+              Discover Support
+            </h3>
+
+            <p>
+              Explore government schemes that may be relevant
+              to your business profile.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Principle */}
+
+      <section className="platform-principle-section">
+        <div className="section-heading">
+          <p className="section-eyebrow">
+            BUILT FOR RESPONSIBLE GUIDANCE
+          </p>
+
+          <h2>
+            Guidance should be clear,
+            explainable and trustworthy
+          </h2>
+
+          <p>
+            Udyog Setu is designed to help businesses understand
+            industrial processes. It does not replace government
+            authorities, official portals or statutory decision
+            making.
+          </p>
+        </div>
+
+        <div className="principle-grid">
+          <div className="principle-card">
+            <span>01</span>
+
+            <h3>
+              Structured Rules
+            </h3>
+
+            <p>
+              Applicability is evaluated through defined
+              business and regulatory criteria.
+            </p>
+          </div>
+
+          <div className="principle-card">
+            <span>02</span>
+
+            <h3>
+              Explainable Results
+            </h3>
+
+            <p>
+              Users should understand why a requirement or
+              recommendation may be relevant.
+            </p>
+          </div>
+
+          <div className="principle-card">
+            <span>03</span>
+
+            <h3>
+              Official Process Awareness
+            </h3>
+
+            <p>
+              Udyog Setu guides users toward the appropriate
+              next steps and official processes.
             </p>
           </div>
         </div>
@@ -433,12 +561,13 @@ export default function HomePage() {
 
           <h2>
             Build your business profile
-            and discover what applies to you.
+            and discover what may apply to you.
           </h2>
 
           <p>
             Start with your business information and let
-            Udyog Setu guide you through the next steps.
+            Udyog Setu guide you through requirements,
+            compliance and relevant support opportunities.
           </p>
         </div>
 
@@ -461,6 +590,24 @@ export default function HomePage() {
           <p>
             Intelligent Industrial Guidance Platform
           </p>
+        </div>
+
+        <div className="footer-links">
+          <Link href="/businesses">
+            Businesses
+          </Link>
+
+          <Link href="/requirements">
+            Requirements
+          </Link>
+
+          <Link href="/compliance">
+            Compliance
+          </Link>
+
+          <Link href="/schemes">
+            Schemes
+          </Link>
         </div>
 
         <p>

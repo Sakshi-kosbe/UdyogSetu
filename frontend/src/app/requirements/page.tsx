@@ -1,17 +1,12 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
+
+import { Business } from "@/lib/business";
 
 import {
   getBusinesses,
 } from "@/lib/business-api";
-
-import {
-  Business,
-} from "@/lib/business";
 
 import {
   discoverRequirements,
@@ -27,19 +22,24 @@ export default function RequirementsPage() {
   const [businesses, setBusinesses] =
     useState<Business[]>([]);
 
-  const [selectedBusinessId, setSelectedBusinessId] =
+  const [selectedBusinessId,
+    setSelectedBusinessId] =
     useState("");
 
-  const [requirements, setRequirements] =
+  const [requirements,
+    setRequirements] =
     useState<Requirement[]>([]);
 
-  const [loadingBusinesses, setLoadingBusinesses] =
+  const [loadingBusinesses,
+    setLoadingBusinesses] =
     useState(true);
 
-  const [discovering, setDiscovering] =
+  const [discovering,
+    setDiscovering] =
     useState(false);
 
-  const [error, setError] =
+  const [error,
+    setError] =
     useState("");
 
 
@@ -61,7 +61,7 @@ export default function RequirementsPage() {
       console.error(error);
 
       setError(
-        "Unable to load businesses. Please make sure the backend is running."
+        "Unable to load businesses. Make sure the backend is running."
       );
 
     } finally {
@@ -69,6 +69,7 @@ export default function RequirementsPage() {
       setLoadingBusinesses(false);
 
     }
+
   }
 
 
@@ -79,7 +80,7 @@ export default function RequirementsPage() {
   }, []);
 
 
-  async function handleDiscover() {
+  async function handleDiscovery() {
 
     if (!selectedBusinessId) {
 
@@ -88,6 +89,7 @@ export default function RequirementsPage() {
       );
 
       return;
+
     }
 
     try {
@@ -98,26 +100,19 @@ export default function RequirementsPage() {
 
       setRequirements([]);
 
-      const result =
+      const data =
         await discoverRequirements(
           selectedBusinessId
         );
 
-      const discoveredRequirements =
-        result.requirements ||
-        result.matched_requirements ||
-        [];
-
-      setRequirements(
-        discoveredRequirements
-      );
+      setRequirements(data);
 
     } catch (error) {
 
       console.error(error);
 
       setError(
-        "Unable to discover requirements. Please check the backend connection."
+        "Unable to discover requirements. Please check the backend API."
       );
 
     } finally {
@@ -125,109 +120,280 @@ export default function RequirementsPage() {
       setDiscovering(false);
 
     }
+
   }
+
+
+  const selectedBusiness =
+    businesses.find(
+      (business) =>
+        business.id === selectedBusinessId
+    );
 
 
   return (
 
     <main className="requirements-page">
 
-      <section className="requirements-header">
+      {/* HERO */}
 
-        <p className="eyebrow">
-          INTELLIGENT DISCOVERY
-        </p>
+      <section className="requirements-hero">
 
-        <h1>
-          What applies to my business?
-        </h1>
+        <div className="requirements-hero-content">
 
-        <p>
-          Select your business profile and let
-          Udyog Setu identify potentially
-          applicable industrial requirements
-          using structured regulatory rules.
-        </p>
+          <div className="requirements-hero-text">
 
-      </section>
+            <p className="eyebrow">
+              INTELLIGENT REQUIREMENT DISCOVERY
+            </p>
 
+            <h1>
+              What Applies to
+              <span> My Business?</span>
+            </h1>
 
-      <section className="discovery-card">
-
-        <div className="discovery-controls">
-
-          <div className="form-group">
-
-            <label htmlFor="business">
-
-              Select Business
-
-            </label>
-
-            <select
-              id="business"
-              value={selectedBusinessId}
-              onChange={(event) =>
-                setSelectedBusinessId(
-                  event.target.value
-                )
-              }
-              disabled={loadingBusinesses}
-            >
-
-              <option value="">
-
-                Select a business
-
-              </option>
-
-
-              {businesses.map((business) => (
-
-                <option
-                  key={business.id}
-                  value={business.id}
-                >
-
-                  {business.name}
-
-                </option>
-
-              ))}
-
-            </select>
+            <p className="requirements-description">
+              Select a business profile and discover potentially
+              applicable industrial approvals, registrations,
+              licences and compliance requirements.
+            </p>
 
           </div>
 
 
-          <button
-            type="button"
-            className="discover-button"
-            onClick={handleDiscover}
-            disabled={
-              discovering ||
-              loadingBusinesses
-            }
-          >
+          <div className="requirements-hero-info">
 
-            {discovering
-              ? "Discovering..."
-              : "Discover Requirements"}
+            <div className="hero-info-icon">
+              🔍
+            </div>
 
-          </button>
+            <div>
+
+              <strong>
+                Smart Requirement Discovery
+              </strong>
+
+              <p>
+                Structured rules help identify requirements
+                that may apply to your business.
+              </p>
+
+            </div>
+
+          </div>
 
         </div>
 
+      </section>
 
-        {loadingBusinesses && (
 
-          <p className="status-message">
+      {/* DISCOVERY */}
 
-            Loading business profiles...
+      <section className="requirements-content">
 
-          </p>
+        <div className="requirements-discovery-layout">
 
-        )}
+          {/* SELECT BUSINESS */}
+
+          <div className="business-selection-card">
+
+            <div className="card-heading">
+
+              <div className="card-icon">
+                🏢
+              </div>
+
+              <div>
+
+                <h2>
+                  Select Business Profile
+                </h2>
+
+                <p>
+                  Choose the business you want to analyse.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            {loadingBusinesses ? (
+
+              <p className="status-message">
+                Loading business profiles...
+              </p>
+
+            ) : (
+
+              <>
+
+                <div className="requirements-select-wrapper">
+
+                  <label>
+                    Business Profile
+                  </label>
+
+                  <select
+                    value={selectedBusinessId}
+                    onChange={(event) =>
+                      setSelectedBusinessId(
+                        event.target.value
+                      )
+                    }
+                  >
+
+                    <option value="">
+                      Select your business
+                    </option>
+
+                    {businesses.map(
+                      (business) => (
+
+                        <option
+                          key={business.id}
+                          value={business.id}
+                        >
+
+                          {business.name} — {business.industry}
+
+                        </option>
+
+                      )
+                    )}
+
+                  </select>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  className="primary-button discover-button"
+                  onClick={handleDiscovery}
+                  disabled={
+                    discovering ||
+                    !selectedBusinessId
+                  }
+                >
+
+                  {discovering
+                    ? "Discovering Requirements..."
+                    : "Discover Requirements →"}
+
+                </button>
+
+              </>
+
+            )}
+
+          </div>
+
+
+          {/* SELECTED BUSINESS */}
+
+          <div className="selected-profile-card">
+
+            {selectedBusiness ? (
+
+              <>
+
+                <p className="eyebrow">
+                  SELECTED BUSINESS
+                </p>
+
+                <h2>
+                  {selectedBusiness.name}
+                </h2>
+
+                <p className="selected-profile-subtitle">
+                  Business profile information used for
+                  requirement discovery.
+                </p>
+
+
+                <div className="selected-profile-details">
+
+                  <div className="profile-detail">
+
+                    <span>
+                      Industry
+                    </span>
+
+                    <strong>
+                      {selectedBusiness.industry}
+                    </strong>
+
+                  </div>
+
+
+                  <div className="profile-detail">
+
+                    <span>
+                      Business Size
+                    </span>
+
+                    <strong>
+                      {selectedBusiness.business_size}
+                    </strong>
+
+                  </div>
+
+
+                  <div className="profile-detail">
+
+                    <span>
+                      Location
+                    </span>
+
+                    <strong>
+                      {selectedBusiness.location}
+                    </strong>
+
+                  </div>
+
+
+                  <div className="profile-detail">
+
+                    <span>
+                      Activity
+                    </span>
+
+                    <strong>
+                      {selectedBusiness.activity}
+                    </strong>
+
+                  </div>
+
+                </div>
+
+              </>
+
+            ) : (
+
+              <div className="no-business-selected">
+
+                <div className="empty-profile-icon">
+                  🏢
+                </div>
+
+                <h2>
+                  No Business Selected
+                </h2>
+
+                <p>
+                  Select a business profile to view its
+                  information and discover applicable
+                  requirements.
+                </p>
+
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
 
 
         {error && (
@@ -240,62 +406,86 @@ export default function RequirementsPage() {
 
         )}
 
-      </section>
+
+        {/* RESULTS */}
+
+        <section className="requirements-results-section">
+
+          <div className="requirements-results-heading">
+
+            <div>
+
+              <p className="eyebrow">
+                DISCOVERY RESULTS
+              </p>
+
+              <h2>
+                Potentially Applicable Requirements
+              </h2>
+
+              <p>
+                Review the requirements identified based
+                on your selected business profile.
+              </p>
+
+            </div>
 
 
-      <section className="requirements-results">
+            {requirements.length > 0 && (
 
-        <div className="results-header">
+              <div className="requirements-found-badge">
 
-          <div>
+                <strong>
+                  {requirements.length}
+                </strong>
 
-            <p className="eyebrow">
+                <span>
+                  Requirements Found
+                </span>
 
-              DISCOVERY RESULTS
+              </div>
 
-            </p>
-
-            <h2>
-
-              Applicable Requirements
-
-            </h2>
+            )}
 
           </div>
 
 
-          {requirements.length > 0 && (
+          {!discovering &&
+            requirements.length === 0 &&
+            selectedBusinessId && (
 
-            <span className="results-count">
+              <div className="requirements-empty-state">
 
-              {requirements.length} Found
+                <div className="empty-state-icon">
+                  🔍
+                </div>
 
-            </span>
+                <h3>
+                  Ready to Discover Requirements
+                </h3>
 
-          )}
+                <p>
 
-        </div>
+                  Click the "Discover Requirements" button
+                  to analyse your business profile.
+
+                </p>
+
+              </div>
+
+            )}
 
 
-        {!discovering &&
-          requirements.length === 0 &&
-          selectedBusinessId && (
+          {discovering && (
 
-            <div className="empty-results">
+            <div className="requirements-loading-state">
 
-              <h3>
-
-                Ready to discover requirements
-
-              </h3>
+              <div className="loading-spinner" />
 
               <p>
-
-                Click Discover Requirements to
-                identify potentially applicable
-                approvals and compliance
-                requirements.
-
+                Analysing your business profile and
+                discovering potentially applicable
+                requirements...
               </p>
 
             </div>
@@ -303,72 +493,63 @@ export default function RequirementsPage() {
           )}
 
 
-        <div className="requirements-grid">
+          <div className="requirements-grid">
 
-          {requirements.map(
-            (requirement, index) => (
+            {requirements.map(
+              (requirement) => (
 
-              <article
-                key={
-                  requirement.id ||
-                  requirement.requirement_id ||
-                  index
-                }
-                className="requirement-card"
-              >
+                <article
+                  key={requirement.id}
+                  className="discovered-requirement-card"
+                >
 
-                <div className="requirement-card-header">
+                  <div className="requirement-card-top">
 
-                  <span className="requirement-number">
+                    <span className="requirement-category-badge">
 
-                    {String(index + 1).padStart(
-                      2,
-                      "0"
+                      {requirement.category ||
+                        "Requirement"}
+
+                    </span>
+
+
+                    {requirement.status && (
+
+                      <span className="requirement-status-badge">
+
+                        {requirement.status}
+
+                      </span>
+
                     )}
 
-                  </span>
+                  </div>
 
 
-                  <span className="requirement-category">
+                  <h3>
 
-                    {requirement.category ||
-                      "Requirement"}
+                    {requirement.name}
 
-                  </span>
-
-                </div>
+                  </h3>
 
 
-                <h3>
+                  {requirement.description && (
 
-                  {requirement.name ||
-                    requirement.title ||
-                    "Unnamed Requirement"}
+                    <p className="requirement-description">
 
-                </h3>
+                      {requirement.description}
 
+                    </p>
 
-                {requirement.description && (
+                  )}
 
-                  <p className="requirement-description">
-
-                    {requirement.description}
-
-                  </p>
-
-                )}
-
-
-                <div className="requirement-info">
 
                   {requirement.authority && (
 
-                    <div>
+                    <div className="requirement-authority">
 
                       <span>
-
                         Authority
-
                       </span>
 
                       <strong>
@@ -382,83 +563,47 @@ export default function RequirementsPage() {
                   )}
 
 
-                  {requirement.priority && (
+                  {(requirement.applicability_reason ||
+                    requirement.reason) && (
 
-                    <div>
+                    <div className="why-requirement-applies">
 
-                      <span>
+                      <div className="why-applies-heading">
 
-                        Priority
+                        <span>
+                          ✓
+                        </span>
 
-                      </span>
+                        <h4>
+                          Why this may apply
+                        </h4>
 
-                      <strong>
+                      </div>
 
-                        {requirement.priority}
+                      <p>
 
-                      </strong>
+                        {requirement.applicability_reason ||
+                          requirement.reason}
+
+                      </p>
 
                     </div>
 
                   )}
 
-                </div>
+                </article>
 
+              )
+            )}
 
-                {(requirement.applicability_reason ||
-                  requirement.why_applies) && (
+          </div>
 
-                  <div className="why-applies">
-
-                    <strong>
-
-                      Why it may apply
-
-                    </strong>
-
-                    <p>
-
-                      {requirement.applicability_reason ||
-                        requirement.why_applies}
-
-                    </p>
-
-                  </div>
-
-                )}
-
-              </article>
-
-            )
-          )}
-
-        </div>
-
-      </section>
-
-
-      <section className="disclaimer-card">
-
-        <strong>
-
-          Important
-
-        </strong>
-
-        <p>
-
-          Udyog Setu provides structured
-          guidance based on configured
-          regulatory information and rules.
-          Final statutory applicability and
-          approval decisions remain with the
-          relevant government authorities.
-
-        </p>
+        </section>
 
       </section>
 
     </main>
 
   );
+
 }

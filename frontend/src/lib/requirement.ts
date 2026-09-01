@@ -1,35 +1,16 @@
 export interface Requirement {
-  id?: string;
-
-  requirement_id?: string;
-
-  name?: string;
-
-  title?: string;
-
+  id: string;
+  name: string;
   description?: string;
-
   category?: string;
-
   authority?: string;
-
-  priority?: string;
-
   status?: string;
-
   applicability_reason?: string;
-
-  why_applies?: string;
-
-  official_source?: string;
+  reason?: string;
 }
 
 export interface RequirementDiscoveryResponse {
-  business_id: string;
-
-  business_name?: string;
-
+  business_id?: string;
   requirements?: Requirement[];
-
   matched_requirements?: Requirement[];
 }
