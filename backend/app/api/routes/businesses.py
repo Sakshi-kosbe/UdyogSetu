@@ -11,6 +11,10 @@ from app.schemas.business import (
     BusinessUpdate,
 )
 from app.services.requirement_matcher import discover_requirements_for_business
+from app.services.scheme_service import (
+    discover_business_schemes,
+)
+
 
 
 router = APIRouter(
@@ -200,3 +204,23 @@ async def discover_business_requirements(
             "This does not constitute a statutory decision."
         ),
     }
+
+@router.get(
+    "/{business_id}/schemes",
+)
+async def discover_schemes_for_business(
+    business_id: str,
+):
+
+    result = await discover_business_schemes(
+        business_id
+    )
+
+    if not result:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Business not found.",
+        )
+
+    return result
