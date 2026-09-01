@@ -1,353 +1,473 @@
-import Badge from "@/components/ui/Badge";
-import Button from "@/components/ui/Button";
-import Card from "@/components/ui/Card";
-import SectionHeader from "@/components/common/SectionHeader";
-import Footer from "@/components/layout/Footer";
-import Navbar from "@/components/layout/Navbar";
-import PageContainer from "@/components/layout/PageContainer";
+import Link from "next/link";
 
-const capabilities = [
-  {
-    number: "01",
-    title: "Discover Requirements",
-    description:
-      "Understand which approvals, registrations, licences, and compliance requirements may apply to your business.",
-  },
-  {
-    number: "02",
-    title: "Know Why They Apply",
-    description:
-      "View the business factors and structured rules behind every potentially applicable requirement.",
-  },
-  {
-    number: "03",
-    title: "Prepare Documents",
-    description:
-      "Follow organised document checklists and track application readiness before starting a workflow.",
-  },
-  {
-    number: "04",
-    title: "Track Applications",
-    description:
-      "Monitor simulated application stages, officer reviews, queries, responses, decisions, and follow-up actions.",
-  },
-];
-
-const businessBenefits = [
-  "Create a structured business profile",
-  "Discover potentially applicable requirements",
-  "Understand why each requirement applies",
-  "Track document readiness",
-  "Monitor application workflows",
-  "Stay aware of compliance and renewals",
-];
-
-const officerBenefits = [
-  "Review applications in a structured workflow",
-  "Access relevant business and document information",
-  "Raise and manage clarification queries",
-  "Track workflow progress and pending actions",
-  "Identify application bottlenecks",
-  "Monitor compliance follow-up activities",
-];
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <>
-      <Navbar />
+    <main className="home-page">
+      {/* Navigation */}
 
-      <main>
-        {/* Hero */}
-        <section className="hero">
-          <PageContainer>
-            <div className="hero__content">
-              <div className="hero__badge">
-                <Badge variant="info">SIH 2026 Prototype</Badge>
-              </div>
+      <nav className="navbar">
+        <div className="nav-container">
+          <Link href="/" className="brand">
+            <div className="brand-icon">U</div>
 
-              <p className="eyebrow">
-                INDUSTRIAL APPROVALS • COMPLIANCE • GOVERNMENT SUPPORT
-              </p>
+            <div>
+              <h1>Udyog Setu</h1>
 
-              <h1>
-                A clearer path through
-                <span> industrial approvals.</span>
-              </h1>
+              <span>Industrial Guidance Platform</span>
+            </div>
+          </Link>
 
-              <p className="hero__description">
-                Udyog Setu helps businesses understand what may apply to them,
-                why it applies, and what they need to prepare before entering
-                approval and compliance workflows.
-              </p>
+          <div className="nav-links">
+            <Link href="/">Home</Link>
 
-              <div className="hero__actions">
-                <a href="#get-started">
-                  <Button>Explore the Platform</Button>
-                </a>
+            <Link href="/businesses">Businesses</Link>
 
-                <a href="#how-it-works">
-                  <Button variant="outline">How It Works</Button>
-                </a>
-              </div>
+            <a href="#features">Features</a>
 
-              <div className="hero__trust">
-                <span>Structured guidance</span>
-                <span>Verified sources</span>
-                <span>Transparent reasoning</span>
-              </div>
+            <a href="#workflow">Workflow</a>
+          </div>
+
+          <Link href="/businesses" className="nav-button">
+            Get Started
+          </Link>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+
+      <section className="hero-section">
+        <div className="hero-content">
+          <div className="hero-text">
+            <p className="hero-badge">
+              SMART INDUSTRIAL GUIDANCE
+            </p>
+
+            <h2>
+              Simplifying Industrial
+              <span> Approvals & Compliance</span>
+            </h2>
+
+            <p className="hero-description">
+              Udyog Setu helps businesses understand what
+              requirements may apply to them, prepare documents,
+              track compliance, and discover relevant government
+              support services.
+            </p>
+
+            <div className="hero-actions">
+              <Link
+                href="/businesses"
+                className="primary-button hero-primary"
+              >
+                Create Business Profile
+              </Link>
+
+              <a
+                href="#workflow"
+                className="secondary-button hero-secondary"
+              >
+                Explore Workflow
+              </a>
             </div>
 
-            <div className="hero__visual">
-              <div className="hero-panel">
-                <div className="hero-panel__header">
-                  <div>
-                    <p className="hero-panel__label">BUSINESS PROFILE</p>
-                    <h3>ABC Manufacturing</h3>
-                  </div>
+            <div className="hero-note">
+              <span className="note-icon">✓</span>
 
-                  <Badge variant="success">Profile Ready</Badge>
+              <p>
+                Rules determine applicability.
+                AI assists with guidance and explanations.
+              </p>
+            </div>
+          </div>
+
+          {/* Dashboard Preview */}
+
+          <div className="hero-dashboard">
+            <div className="dashboard-window">
+              <div className="dashboard-topbar">
+                <div className="window-dots">
+                  <span />
+                  <span />
+                  <span />
                 </div>
 
-                <div className="hero-panel__grid">
-                  <div>
-                    <span>Industry</span>
-                    <strong>Manufacturing</strong>
+                <p>Udyog Setu Dashboard</p>
+              </div>
+
+              <div className="dashboard-body">
+                <div className="dashboard-sidebar">
+                  <div className="sidebar-logo">
+                    U
                   </div>
 
-                  <div>
-                    <span>Business Size</span>
-                    <strong>Medium</strong>
+                  <div className="sidebar-item active">
+                    ▣
                   </div>
 
-                  <div>
-                    <span>Location</span>
-                    <strong>Demo Region</strong>
+                  <div className="sidebar-item">
+                    ◈
                   </div>
 
-                  <div>
-                    <span>Activity</span>
-                    <strong>Industrial Unit</strong>
+                  <div className="sidebar-item">
+                    ✓
+                  </div>
+
+                  <div className="sidebar-item">
+                    ⚙
                   </div>
                 </div>
 
-                <div className="hero-panel__result">
-                  <div>
-                    <span className="result-icon">✓</span>
-
+                <div className="dashboard-main">
+                  <div className="dashboard-heading">
                     <div>
-                      <p>Requirement Discovery Complete</p>
-                      <strong>8 potential requirements identified</strong>
+                      <p>WELCOME BACK</p>
+
+                      <h3>
+                        Your Industrial Journey
+                      </h3>
+                    </div>
+
+                    <div className="profile-circle">
+                      B
                     </div>
                   </div>
 
-                  <span className="result-arrow">→</span>
+                  <div className="dashboard-stats">
+                    <div className="dashboard-stat">
+                      <span className="stat-icon">
+                        🏭
+                      </span>
+
+                      <div>
+                        <strong>1</strong>
+
+                        <p>Business Profile</p>
+                      </div>
+                    </div>
+
+                    <div className="dashboard-stat">
+                      <span className="stat-icon">
+                        ✓
+                      </span>
+
+                      <div>
+                        <strong>8</strong>
+
+                        <p>Potential Requirements</p>
+                      </div>
+                    </div>
+
+                    <div className="dashboard-stat">
+                      <span className="stat-icon">
+                        📄
+                      </span>
+
+                      <div>
+                        <strong>12</strong>
+
+                        <p>Documents</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="dashboard-progress">
+                    <div className="progress-header">
+                      <div>
+                        <p>APPLICATION READINESS</p>
+
+                        <h4>
+                          Overall Progress
+                        </h4>
+                      </div>
+
+                      <strong>65%</strong>
+                    </div>
+
+                    <div className="progress-bar">
+                      <div className="progress-fill" />
+                    </div>
+                  </div>
+
+                  <div className="dashboard-requirements">
+                    <div className="requirements-header">
+                      <h4>
+                        Suggested Next Steps
+                      </h4>
+
+                      <span>
+                        View All →
+                      </span>
+                    </div>
+
+                    <div className="requirement-row">
+                      <div className="requirement-status pending">
+                        !
+                      </div>
+
+                      <div>
+                        <strong>
+                          Review Required Approvals
+                        </strong>
+
+                        <p>
+                          Check potentially applicable
+                          industrial requirements.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="requirement-row">
+                      <div className="requirement-status complete">
+                        ✓
+                      </div>
+
+                      <div>
+                        <strong>
+                          Business Profile Completed
+                        </strong>
+
+                        <p>
+                          Your business information is ready.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </PageContainer>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        {/* Core Differentiator */}
-        <section className="differentiator">
-          <PageContainer>
-            <div className="differentiator__content">
-              <div>
-                <p className="eyebrow">THE CORE QUESTION</p>
+      {/* Platform Features */}
 
-                <h2>“What applies to my business?”</h2>
+      <section
+        id="features"
+        className="features-section"
+      >
+        <div className="section-heading">
+          <p className="section-eyebrow">
+            ONE PLATFORM. COMPLETE GUIDANCE.
+          </p>
 
-                <p>
-                  Businesses often have to navigate fragmented information,
-                  multiple departments, and complex eligibility conditions.
-                  Udyog Setu starts with the business itself.
-                </p>
-              </div>
+          <h2>
+            Everything your business needs to
+            navigate industrial processes
+          </h2>
 
-              <div className="differentiator__steps">
-                <div className="mini-step">
-                  <span>01</span>
-                  <p>Understand your business</p>
-                </div>
+          <p>
+            From discovering requirements to tracking compliance,
+            Udyog Setu provides structured guidance throughout
+            the business journey.
+          </p>
+        </div>
 
-                <div className="mini-step">
-                  <span>02</span>
-                  <p>Evaluate structured rules</p>
-                </div>
-
-                <div className="mini-step">
-                  <span>03</span>
-                  <p>Explain potential requirements</p>
-                </div>
-              </div>
+        <div className="features-grid">
+          <article className="feature-card">
+            <div className="feature-icon">
+              🏢
             </div>
-          </PageContainer>
-        </section>
 
-        {/* How it works */}
-        <section id="how-it-works" className="section">
-          <PageContainer>
-            <SectionHeader
-              eyebrow="HOW IT WORKS"
-              title="From business profile to compliance follow-up."
-              description="A guided journey that brings requirement discovery, readiness, workflow visibility, and compliance tracking into one structured experience."
-            />
+            <h3>
+              Business Profile
+            </h3>
 
-            <div className="journey">
-              <div className="journey__item">
-                <span>1</span>
-                <h3>Business Profile</h3>
-                <p>Capture the key details of the business and project.</p>
-              </div>
+            <p>
+              Create a structured business profile that helps
+              determine relevant industrial requirements.
+            </p>
+          </article>
 
-              <div className="journey__line" />
-
-              <div className="journey__item">
-                <span>2</span>
-                <h3>Requirement Discovery</h3>
-                <p>Identify potentially applicable requirements using rules.</p>
-              </div>
-
-              <div className="journey__line" />
-
-              <div className="journey__item">
-                <span>3</span>
-                <h3>Readiness</h3>
-                <p>Prepare documents and understand missing information.</p>
-              </div>
-
-              <div className="journey__line" />
-
-              <div className="journey__item">
-                <span>4</span>
-                <h3>Workflow</h3>
-                <p>Track review, queries, responses, and decisions.</p>
-              </div>
-
-              <div className="journey__line" />
-
-              <div className="journey__item">
-                <span>5</span>
-                <h3>Compliance</h3>
-                <p>Monitor follow-up obligations and renewal timelines.</p>
-              </div>
+          <article className="feature-card">
+            <div className="feature-icon">
+              🔍
             </div>
-          </PageContainer>
-        </section>
 
-        {/* Capabilities */}
-        <section id="capabilities" className="section section--muted">
-          <PageContainer>
-            <SectionHeader
-              eyebrow="PLATFORM CAPABILITIES"
-              title="One foundation for the complete journey."
-              description="The prototype is designed around reusable workflows that can support businesses, officers, and administrators."
-            />
+            <h3>
+              Requirement Discovery
+            </h3>
 
-            <div className="capability-grid">
-              {capabilities.map((capability) => (
-                <Card key={capability.number}>
-                  <span className="capability__number">
-                    {capability.number}
-                  </span>
+            <p>
+              Identify potentially applicable approvals,
+              registrations and regulatory requirements.
+            </p>
+          </article>
 
-                  <h3>{capability.title}</h3>
-
-                  <p>{capability.description}</p>
-                </Card>
-              ))}
+          <article className="feature-card">
+            <div className="feature-icon">
+              📋
             </div>
-          </PageContainer>
-        </section>
 
-        {/* Users */}
-        <section id="users" className="section">
-          <PageContainer>
-            <SectionHeader
-              eyebrow="BUILT FOR BOTH SIDES"
-              title="Designed for businesses and government officers."
-              description="Different users need different views, but they should operate on a shared and transparent workflow foundation."
-            />
+            <h3>
+              Document Readiness
+            </h3>
 
-            <div className="user-grid">
-              <Card className="user-card">
-                <Badge variant="info">BUSINESS USER</Badge>
+            <p>
+              Understand document requirements and prepare
+              applications before visiting official portals.
+            </p>
+          </article>
 
-                <h3>Know what to prepare.</h3>
-
-                <p>
-                  Move from uncertainty toward a structured understanding of
-                  requirements, documents, applications, and compliance.
-                </p>
-
-                <ul className="feature-list">
-                  {businessBenefits.map((benefit) => (
-                    <li key={benefit}>{benefit}</li>
-                  ))}
-                </ul>
-              </Card>
-
-              <Card className="user-card">
-                <Badge variant="success">GOVERNMENT OFFICER</Badge>
-
-                <h3>Review with better context.</h3>
-
-                <p>
-                  Work with organised application information, documents,
-                  queries, workflow states, and operational insights.
-                </p>
-
-                <ul className="feature-list">
-                  {officerBenefits.map((benefit) => (
-                    <li key={benefit}>{benefit}</li>
-                  ))}
-                </ul>
-              </Card>
+          <article className="feature-card">
+            <div className="feature-icon">
+              ✓
             </div>
-          </PageContainer>
-        </section>
 
-        {/* Demo Notice */}
-        <section className="demo-section">
-          <PageContainer>
-            <div className="demo-notice">
-              <Badge variant="warning">IMPORTANT</Badge>
+            <h3>
+              Compliance Tracking
+            </h3>
 
-              <div>
-                <h3>Built as an SIH 2026 prototype.</h3>
+            <p>
+              Track compliance records, upcoming renewals,
+              deadlines and important business obligations.
+            </p>
+          </article>
 
-                <p>
-                  Udyog Setu currently demonstrates simulated workflows and
-                  demo data. It does not replace government portals, perform
-                  statutory decisions, or claim live government integration.
-                </p>
-              </div>
+          <article className="feature-card">
+            <div className="feature-icon">
+              🎯
             </div>
-          </PageContainer>
-        </section>
 
-        {/* CTA */}
-        <section id="get-started" className="cta-section">
-          <PageContainer>
-            <div className="cta">
-              <div>
-                <p className="eyebrow">START WITH THE BUSINESS</p>
+            <h3>
+              Scheme Discovery
+            </h3>
 
-                <h2>Build a clearer path to industrial readiness.</h2>
+            <p>
+              Discover government schemes that may be relevant
+              to your business profile and industry.
+            </p>
+          </article>
 
-                <p>
-                  The next stages of Udyog Setu will turn this interface
-                  foundation into a working platform for requirement discovery,
-                  application workflows, and compliance tracking.
-                </p>
-              </div>
-
-              <Button>Explore Udyog Setu</Button>
+          <article className="feature-card">
+            <div className="feature-icon">
+              💬
             </div>
-          </PageContainer>
-        </section>
-      </main>
 
-      <Footer />
-    </>
+            <h3>
+              Intelligent Guidance
+            </h3>
+
+            <p>
+              Get clear explanations and guidance while keeping
+              regulatory decisions based on structured rules.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      {/* Workflow */}
+
+      <section
+        id="workflow"
+        className="workflow-section"
+      >
+        <div className="section-heading">
+          <p className="section-eyebrow">
+            HOW UDYOG SETU WORKS
+          </p>
+
+          <h2>
+            Your journey from business setup
+            to compliance readiness
+          </h2>
+        </div>
+
+        <div className="workflow-grid">
+          <div className="workflow-step">
+            <span>01</span>
+
+            <h3>
+              Create Profile
+            </h3>
+
+            <p>
+              Add your business details and industrial activity.
+            </p>
+          </div>
+
+          <div className="workflow-step">
+            <span>02</span>
+
+            <h3>
+              Discover Requirements
+            </h3>
+
+            <p>
+              Understand what may apply to your business.
+            </p>
+          </div>
+
+          <div className="workflow-step">
+            <span>03</span>
+
+            <h3>
+              Prepare Documents
+            </h3>
+
+            <p>
+              Check application readiness before proceeding.
+            </p>
+          </div>
+
+          <div className="workflow-step">
+            <span>04</span>
+
+            <h3>
+              Track Compliance
+            </h3>
+
+            <p>
+              Monitor obligations, renewals and next steps.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+
+      <section className="cta-section">
+        <div>
+          <p className="section-eyebrow">
+            START YOUR JOURNEY
+          </p>
+
+          <h2>
+            Build your business profile
+            and discover what applies to you.
+          </h2>
+
+          <p>
+            Start with your business information and let
+            Udyog Setu guide you through the next steps.
+          </p>
+        </div>
+
+        <Link
+          href="/businesses"
+          className="primary-button cta-button"
+        >
+          Create Business Profile →
+        </Link>
+      </section>
+
+      {/* Footer */}
+
+      <footer className="footer">
+        <div>
+          <h3>
+            Udyog Setu
+          </h3>
+
+          <p>
+            Intelligent Industrial Guidance Platform
+          </p>
+        </div>
+
+        <p>
+          Built for streamlined industrial guidance,
+          readiness and compliance.
+        </p>
+      </footer>
+    </main>
   );
 }

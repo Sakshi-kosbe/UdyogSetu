@@ -1,92 +1,63 @@
-import { API_BASE_URL } from "./api";
-import {
-  Business,
-  BusinessCreate,
-  BusinessUpdate,
-} from "./business";
+import { Business } from "@/lib/business";
 
-const BUSINESSES_URL = `${API_BASE_URL}/businesses`;
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "http://127.0.0.1:8000/api/v1";
 
-export async function getBusinesses(): Promise<Business[]> {
-  const response = await fetch(`${BUSINESSES_URL}/`, {
-    cache: "no-store",
-  });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch businesses");
-  }
-
-  return response.json();
+export interface CreateBusinessPayload {
+  name: string;
+  industry: string;
+  business_size: string;
+  location: string;
+  activity: string;
 }
 
-export async function getBusiness(
-  businessId: string
-): Promise<Business> {
+
+export async function getBusinesses(): Promise<Business[]> {
   const response = await fetch(
-    `${BUSINESSES_URL}/${businessId}`,
+    `${API_BASE_URL}/businesses/`,
     {
       cache: "no-store",
     }
   );
 
   if (!response.ok) {
-    throw new Error("Failed to fetch business");
+    throw new Error(
+      "Failed to fetch businesses."
+    );
   }
 
   return response.json();
 }
+
 
 export async function createBusiness(
-  business: BusinessCreate
+  business: CreateBusinessPayload
 ): Promise<Business> {
-  const response = await fetch(`${BUSINESSES_URL}/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(business),
-  });
 
-  if (!response.ok) {
-    throw new Error("Failed to create business");
-  }
-
-  return response.json();
-}
-
-export async function updateBusiness(
-  businessId: string,
-  business: BusinessUpdate
-): Promise<Business> {
   const response = await fetch(
-    `${BUSINESSES_URL}/${businessId}`,
+    `${API_BASE_URL}/businesses/`,
     {
-      method: "PATCH",
+      method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify(business),
     }
   );
 
   if (!response.ok) {
-    throw new Error("Failed to update business");
+    const errorData = await response.json()
+      .catch(() => null);
+
+    throw new Error(
+      errorData?.detail ||
+      "Failed to create business."
+    );
   }
 
   return response.json();
-}
-
-export async function deleteBusiness(
-  businessId: string
-): Promise<void> {
-  const response = await fetch(
-    `${BUSINESSES_URL}/${businessId}`,
-    {
-      method: "DELETE",
-    }
-  );
-
-  if (!response.ok) {
-    throw new Error("Failed to delete business");
-  }
 }
