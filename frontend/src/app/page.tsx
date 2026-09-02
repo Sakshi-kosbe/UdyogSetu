@@ -579,41 +579,246 @@ export default function HomePage() {
         </Link>
       </section>
 
-      {/* Footer */}
+      {/* Professional Footer */}
 
       <footer className="footer">
-        <div>
-          <h3>
-            Udyog Setu
-          </h3>
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "1200px",
+            margin: "0 auto",
+          }}
+        >
+          {/* Main Footer Content */}
 
-          <p>
-            Intelligent Industrial Guidance Platform
-          </p>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns:
+                "minmax(260px, 1.5fr) repeat(3, 1fr)",
+              gap: "50px",
+              paddingBottom: "40px",
+              borderBottom: "1px solid #e4e8ef",
+            }}
+          >
+            {/* Brand */}
+
+            <div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginBottom: "18px",
+                }}
+              >
+                <div
+                  style={{
+                    width: "42px",
+                    height: "42px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "12px",
+                    background: "#1769e0",
+                    color: "white",
+                    fontSize: "20px",
+                    fontWeight: 800,
+                  }}
+                >
+                  U
+                </div>
+
+                <div>
+                  <h3
+                    style={{
+                      margin: 0,
+                      color: "#172033",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Udyog Setu
+                  </h3>
+
+                  <p
+                    style={{
+                      margin: "3px 0 0",
+                      fontSize: "11px",
+                      color: "#687386",
+                    }}
+                  >
+                    Industrial Guidance Platform
+                  </p>
+                </div>
+              </div>
+
+              <p
+                style={{
+                  maxWidth: "330px",
+                  margin: 0,
+                  lineHeight: 1.7,
+                  fontSize: "13px",
+                }}
+              >
+                Intelligent guidance for businesses navigating
+                industrial requirements, compliance obligations
+                and government support opportunities.
+              </p>
+            </div>
+
+            {/* Platform */}
+
+            <div>
+              <h4
+                style={{
+                  margin: "0 0 18px",
+                  color: "#172033",
+                  fontSize: "14px",
+                }}
+              >
+                Platform
+              </h4>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                }}
+              >
+                <Link href="/businesses">
+                  Business Profiles
+                </Link>
+
+                <Link href="/requirements">
+                  Requirements
+                </Link>
+
+                <Link href="/compliance">
+                  Compliance
+                </Link>
+
+                <Link href="/schemes">
+                  Government Schemes
+                </Link>
+              </div>
+            </div>
+
+            {/* Journey */}
+
+            <div>
+              <h4
+                style={{
+                  margin: "0 0 18px",
+                  color: "#172033",
+                  fontSize: "14px",
+                }}
+              >
+                Your Journey
+              </h4>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                }}
+              >
+                <Link href="/businesses">
+                  Create Profile
+                </Link>
+
+                <Link href="/requirements">
+                  Discover Requirements
+                </Link>
+
+                <Link href="/compliance">
+                  Track Compliance
+                </Link>
+
+                <Link href="/schemes">
+                  Discover Support
+                </Link>
+              </div>
+            </div>
+
+            {/* Responsible Guidance */}
+
+            <div>
+              <h4
+                style={{
+                  margin: "0 0 18px",
+                  color: "#172033",
+                  fontSize: "14px",
+                }}
+              >
+                Our Approach
+              </h4>
+
+              <p
+                style={{
+                  margin: 0,
+                  lineHeight: 1.7,
+                  fontSize: "13px",
+                }}
+              >
+                Structured rules help determine potential
+                applicability. Intelligent assistance helps
+                explain processes and guide users toward
+                appropriate next steps.
+              </p>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  marginTop: "18px",
+                  fontSize: "12px",
+                  color: "#16a36a",
+                  fontWeight: 600,
+                }}
+              >
+                <span>✓</span>
+
+                <span>Clear & Responsible Guidance</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Footer */}
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "20px",
+              paddingTop: "25px",
+              flexWrap: "wrap",
+            }}
+          >
+            <p
+              style={{
+                margin: 0,
+                fontSize: "12px",
+              }}
+            >
+              © 2026 Udyog Setu. Industrial Guidance Platform.
+            </p>
+
+            <p
+              style={{
+                margin: 0,
+                fontSize: "12px",
+                color: "#687386",
+              }}
+            >
+              Built for streamlined industrial guidance,
+              readiness and compliance.
+            </p>
+          </div>
         </div>
-
-        <div className="footer-links">
-          <Link href="/businesses">
-            Businesses
-          </Link>
-
-          <Link href="/requirements">
-            Requirements
-          </Link>
-
-          <Link href="/compliance">
-            Compliance
-          </Link>
-
-          <Link href="/schemes">
-            Schemes
-          </Link>
-        </div>
-
-        <p>
-          Built for streamlined industrial guidance,
-          readiness and compliance.
-        </p>
       </footer>
     </main>
   );
