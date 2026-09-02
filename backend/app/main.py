@@ -17,7 +17,7 @@ from app.api.routes.officer import router as officer_router
 from app.api.routes.schemes import (
     router as schemes_router,
 )
-
+from app.api.routes.readiness import router as readiness_router
 
 
 
@@ -82,3 +82,4 @@ app.include_router(applications_router)
 app.include_router(compliance_router)
 app.include_router(officer_router)
 app.include_router(schemes_router)
+app.include_router(readiness_router)
