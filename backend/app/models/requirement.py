@@ -1,37 +1,18 @@
-from app.models.rule import Rule
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import List, Optional
 
 
-class RequirementBase(BaseModel):
-    name: str
-    description: str
-
-    industry: List[str] = Field(default_factory=list)
-
-    business_sizes: List[str] = Field(default_factory=list)
-
-    activities: List[str] = Field(default_factory=list)
-
-    location_types: List[str] = Field(default_factory=list)
-
-    authority: str
-
-    category: str
-
-    required_documents: List[str] = Field(default_factory=list)
-
-    source: Optional[str] = None
-
-    source_url: Optional[str] = None
-
-    applicability_reason: Optional[str] = None
-
-
-class RequirementCreate(RequirementBase):
-    pass
-
-
-class RequirementResponse(RequirementBase):
+class Requirement(BaseModel):
     id: str
-    rules: list[Rule] = Field(default_factory=list)
+    name: str
+    category: str
+    description: str
+    authority: str
+    priority: str
+    status: str = "pending"
+
+    why_applies: List[str] = []
+
+    documents: List[dict] = []
+
+    application_process: Optional[str] = None
