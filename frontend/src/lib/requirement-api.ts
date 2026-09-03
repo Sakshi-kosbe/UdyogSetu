@@ -1,12 +1,9 @@
-import {
-  Requirement,
-  RequirementDiscoveryResponse,
-} from "@/lib/requirement";
+import { Requirement } from "@/lib/requirement";
 
 
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "http://127.0.0.1:8000/api/v1";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://127.0.0.1:8000";
 
 
 export async function discoverRequirements(
@@ -14,9 +11,9 @@ export async function discoverRequirements(
 ): Promise<Requirement[]> {
 
   const response = await fetch(
-    `${API_BASE_URL}/requirements/discover/${businessId}`,
+    `${API_BASE_URL}/api/v1/requirements/discover/${businessId}`,
     {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
@@ -25,18 +22,15 @@ export async function discoverRequirements(
 
   if (!response.ok) {
 
+    const errorData = await response
+      .json()
+      .catch(() => null);
+
     throw new Error(
+      errorData?.detail ||
       "Failed to discover requirements."
     );
   }
 
-  const data: RequirementDiscoveryResponse =
-    await response.json();
-
-
-  return (
-    data.requirements ||
-    data.matched_requirements ||
-    []
-  );
+  return response.json();
 }
