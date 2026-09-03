@@ -1,13 +1,18 @@
+import { API_BASE_URL } from "@/lib/api";
+
 import {
   BusinessDocument,
   DocumentReadiness,
   DocumentStatus,
-} from "./document";
+} from "@/lib/document";
 
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8000/api/v1";
+export interface CreateDocumentPayload {
+  business_id: string;
+  requirement_code: string;
+  document_name: string;
+  document_type?: string;
+}
 
 
 export async function getBusinessDocuments(
@@ -15,7 +20,7 @@ export async function getBusinessDocuments(
 ): Promise<BusinessDocument[]> {
 
   const response = await fetch(
-    `${API_URL}/documents/business/${businessId}`
+    `${API_BASE_URL}/documents/business/${businessId}`
   );
 
   if (!response.ok) {
@@ -27,29 +32,24 @@ export async function getBusinessDocuments(
   }
 
   return response.json();
+
 }
 
 
 export async function createDocument(
-  data: {
-    business_id: string;
-    requirement_code: string;
-    document_name: string;
-    document_type?: string;
-  }
+  payload: CreateDocumentPayload
 ): Promise<BusinessDocument> {
 
   const response = await fetch(
-    `${API_URL}/documents/`,
+    `${API_BASE_URL}/documents/`,
     {
       method: "POST",
 
       headers: {
-        "Content-Type":
-          "application/json",
+        "Content-Type": "application/json",
       },
 
-      body: JSON.stringify(data),
+      body: JSON.stringify(payload),
     }
   );
 
@@ -62,6 +62,7 @@ export async function createDocument(
   }
 
   return response.json();
+
 }
 
 
@@ -71,13 +72,12 @@ export async function updateDocumentStatus(
 ): Promise<BusinessDocument> {
 
   const response = await fetch(
-    `${API_URL}/documents/${documentId}/status`,
+    `${API_BASE_URL}/documents/${documentId}/status`,
     {
       method: "PATCH",
 
       headers: {
-        "Content-Type":
-          "application/json",
+        "Content-Type": "application/json",
       },
 
       body: JSON.stringify({
@@ -95,6 +95,7 @@ export async function updateDocumentStatus(
   }
 
   return response.json();
+
 }
 
 
@@ -103,7 +104,7 @@ export async function deleteDocument(
 ): Promise<void> {
 
   const response = await fetch(
-    `${API_URL}/documents/${documentId}`,
+    `${API_BASE_URL}/documents/${documentId}`,
     {
       method: "DELETE",
     }
@@ -116,6 +117,7 @@ export async function deleteDocument(
     );
 
   }
+
 }
 
 
@@ -124,16 +126,17 @@ export async function getDocumentReadiness(
 ): Promise<DocumentReadiness> {
 
   const response = await fetch(
-    `${API_URL}/documents/business/${businessId}/readiness`
+    `${API_BASE_URL}/documents/business/${businessId}/readiness`
   );
 
   if (!response.ok) {
 
     throw new Error(
-      "Unable to load readiness."
+      "Unable to load application readiness."
     );
 
   }
 
   return response.json();
+
 }

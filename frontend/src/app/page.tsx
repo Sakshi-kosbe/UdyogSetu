@@ -23,10 +23,10 @@ export default function HomePage() {
             <Link href="/businesses">Businesses</Link>
 
             <Link href="/requirements">Requirements</Link>
-            
+
             <Link href="/documents">Documents</Link>
 
-            <Link href="/readiness">Readiness</Link>
+      
 
             <Link href="/compliance">Compliance</Link>
 
