@@ -27,6 +27,9 @@ export default function HomePage() {
             <Link href="/compliance">Compliance</Link>
 
             <Link href="/schemes">Schemes</Link>
+            <Link href="/readiness" className="primary-button">
+              Check Application Readiness
+            </Link>
           </div>
 
           <Link href="/businesses" className="nav-button">

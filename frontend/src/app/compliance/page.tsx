@@ -45,27 +45,35 @@ export default function CompliancePage() {
   });
 
   const loadCompliance = async () => {
-    try {
-      const response = await fetch(
-        `${API_URL}/compliance/`
-      );
+  try {
+    setLoading(true);
 
-      const data = await response.json();
+    const response = await fetch(
+      `${API_URL}/compliance/`
+    );
 
-      setComplianceRecords(data);
-    } catch (error) {
-      console.error(
-        "Failed to load compliance records:",
-        error
+    if (!response.ok) {
+      throw new Error(
+        `Failed to load compliance records: ${response.status}`
       );
-    } finally {
-      setLoading(false);
     }
-  };
 
-  useEffect(() => {
-    loadCompliance();
-  }, []);
+    const data = await response.json();
+
+    setComplianceRecords(
+      Array.isArray(data) ? data : []
+    );
+  } catch (error) {
+    console.error(
+      "Failed to load compliance records:",
+      error
+    );
+
+    setComplianceRecords([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleChange = (
     event: React.ChangeEvent<
@@ -79,12 +87,14 @@ export default function CompliancePage() {
   };
 
   const handleSubmit = async (
-    event: React.FormEvent
-  ) => {
-    event.preventDefault();
+  event: React.FormEvent
+) => {
+  event.preventDefault();
 
-    try {
-      await fetch(`${API_URL}/compliance/`, {
+  try {
+    const response = await fetch(
+      `${API_URL}/compliance/`,
+      {
         method: "POST",
 
         headers: {
@@ -92,94 +102,138 @@ export default function CompliancePage() {
         },
 
         body: JSON.stringify(formData),
-      });
-
-      setFormData({
-        business_id: "demo-business-001",
-
-        title: "",
-        category: "",
-        description: "",
-
-        status: "pending",
-
-        authority: "",
-
-        due_date: "",
-        renewal_date: "",
-      });
-
-      setShowForm(false);
-
-      setLoading(true);
-
-      await loadCompliance();
-
-      setLoading(false);
-    } catch (error) {
-      console.error(
-        "Failed to create compliance record:",
-        error
-      );
-    }
-  };
-
-  const updateStatus = async (
-    id: string,
-    status: string
-  ) => {
-    try {
-      await fetch(
-        `${API_URL}/compliance/${id}`,
-        {
-          method: "PUT",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            status,
-          }),
-        }
-      );
-
-      await loadCompliance();
-    } catch (error) {
-      console.error(
-        "Failed to update compliance:",
-        error
-      );
-    }
-  };
-
-  const deleteCompliance = async (
-    id: string
-  ) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this compliance record?"
+      }
     );
 
-    if (!confirmed) {
-      return;
-    }
+    if (!response.ok) {
+      const errorText = await response.text();
 
-    try {
-      await fetch(
-        `${API_URL}/compliance/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      await loadCompliance();
-    } catch (error) {
       console.error(
-        "Failed to delete compliance:",
-        error
+        "Backend error:",
+        errorText
+      );
+
+      throw new Error(
+        `Failed to save compliance record: ${response.status}`
       );
     }
-  };
+
+    await response.json();
+
+    setFormData({
+      business_id: "demo-business-001",
+
+      title: "",
+      category: "",
+      description: "",
+
+      status: "pending",
+
+      authority: "",
+
+      due_date: "",
+      renewal_date: "",
+    });
+
+    setShowForm(false);
+
+    await loadCompliance();
+
+    alert(
+      "Compliance record saved successfully!"
+    );
+  } catch (error) {
+    console.error(
+      "Failed to create compliance record:",
+      error
+    );
+
+    alert(
+      "Unable to save the compliance record. Check whether the backend is running."
+    );
+  }
+};
+
+  const updateStatus = async (
+  id: string,
+  status: string
+) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/compliance/${id}`,
+      {
+        method: "PUT",
+
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          status,
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to update compliance: ${response.status}`
+      );
+    }
+
+    await loadCompliance();
+  } catch (error) {
+    console.error(
+      "Failed to update compliance:",
+      error
+    );
+
+    alert(
+      "Unable to update compliance status."
+    );
+  }
+};
+
+  const deleteCompliance = async (
+  id: string
+) => {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this compliance record?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `${API_URL}/compliance/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(
+        `Failed to delete compliance: ${response.status}`
+      );
+    }
+
+    await loadCompliance();
+
+    alert(
+      "Compliance record deleted successfully!"
+    );
+  } catch (error) {
+    console.error(
+      "Failed to delete compliance:",
+      error
+    );
+
+    alert(
+      "Unable to delete compliance record."
+    );
+  }
+};
 
   const getStatusClass = (
     status: string
