@@ -7,6 +7,7 @@ from app.api.routes import (
     requirements,
     rules,
     evaluation,
+    documents,
 )
 
 
@@ -35,4 +36,8 @@ api_router.include_router(
 
 api_router.include_router(
     evaluation.router
+)
+
+api_router.include_router(
+    documents.router
 )

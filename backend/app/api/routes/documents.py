@@ -1,5 +1,9 @@
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+
+from app.schemas.document import (
+    DocumentCreate,
+    DocumentStatusUpdate,
+)
 
 from app.services.document_service import (
     calculate_readiness,
@@ -17,27 +21,16 @@ router = APIRouter(
 )
 
 
-class CreateDocumentRequest(BaseModel):
-    business_id: str
-    requirement_code: str
-
-    document_name: str
-    document_type: str | None = None
-
-
-class UpdateDocumentStatusRequest(BaseModel):
-    status: str
-
-
 @router.post("/")
 async def create_document(
-    request: CreateDocumentRequest,
+    document: DocumentCreate,
 ):
+
     return await create_document_record(
-        business_id=request.business_id,
-        requirement_code=request.requirement_code,
-        document_name=request.document_name,
-        document_type=request.document_type,
+        business_id=document.business_id,
+        requirement_code=document.requirement_code,
+        document_name=document.document_name,
+        document_type=document.document_type,
     )
 
 
@@ -45,6 +38,7 @@ async def create_document(
 async def get_documents(
     business_id: str,
 ):
+
     return await get_business_documents(
         business_id
     )
@@ -57,6 +51,7 @@ async def get_requirement_document_list(
     business_id: str,
     requirement_code: str,
 ):
+
     return await get_requirement_documents(
         business_id,
         requirement_code,
@@ -67,6 +62,7 @@ async def get_requirement_document_list(
 async def get_readiness(
     business_id: str,
 ):
+
     return await calculate_readiness(
         business_id
     )
@@ -75,14 +71,16 @@ async def get_readiness(
 @router.patch("/{document_id}/status")
 async def update_status(
     document_id: str,
-    request: UpdateDocumentStatusRequest,
+    status_update: DocumentStatusUpdate,
 ):
+
     document = await update_document_status(
         document_id,
-        request.status,
+        status_update.status,
     )
 
     if not document:
+
         raise HTTPException(
             status_code=404,
             detail="Document not found",
@@ -95,16 +93,19 @@ async def update_status(
 async def delete_document(
     document_id: str,
 ):
+
     deleted = await remove_document(
         document_id
     )
 
     if not deleted:
+
         raise HTTPException(
             status_code=404,
             detail="Document not found",
         )
 
     return {
-        "message": "Document deleted successfully"
+        "message":
+        "Document deleted successfully"
     }

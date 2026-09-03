@@ -1,148 +1,227 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
-type DocumentStatus = {
-  id: string;
-  name: string;
-  completed: boolean;
-};
+import {
+  Business,
+} from "@/lib/business";
 
-type RequirementReadiness = {
-  requirement_id: string;
-  requirement_name: string;
-  status: string;
-  readiness_percentage: number;
-  documents: DocumentStatus[];
-};
+import {
+  getBusinesses,
+} from "@/lib/business-api";
 
-type ReadinessData = {
-  business_id: string;
-  overall_readiness: number;
-  total_requirements: number;
-  ready_requirements: number;
-  in_progress_requirements: number;
-  missing_documents: number;
-  requirements: RequirementReadiness[];
-};
+import {
+  DocumentReadiness,
+} from "@/lib/document";
 
-const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8000";
+import {
+  getDocumentReadiness,
+} from "@/lib/document-api";
 
 
 export default function ReadinessPage() {
-  const [data, setData] =
-    useState<ReadinessData | null>(null);
 
-  const [loading, setLoading] = useState(true);
+  const [
+    businesses,
+    setBusinesses,
+  ] = useState<Business[]>([]);
 
-  const [error, setError] = useState("");
+  const [
+    selectedBusinessId,
+    setSelectedBusinessId,
+  ] = useState("");
 
-  const businessId = "demo-business-1";
+  const [
+    readiness,
+    setReadiness,
+  ] = useState<DocumentReadiness | null>(
+    null
+  );
+
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
+
+  const [
+    loadingReadiness,
+    setLoadingReadiness,
+  ] = useState(false);
+
+  const [
+    error,
+    setError,
+  ] = useState("");
 
 
-  async function loadReadiness() {
+  async function loadBusinesses() {
+
     try {
+
       setLoading(true);
+
       setError("");
 
-      const response = await fetch(
-        `${API_URL}/api/readiness/${businessId}`
-      );
+      const data =
+        await getBusinesses();
 
-      if (!response.ok) {
-        throw new Error(
-          "Unable to load application readiness."
-        );
-      }
-
-      const readinessData =
-        await response.json();
-
-      setData(readinessData);
+      setBusinesses(data);
 
     } catch (error) {
+
       console.error(error);
 
       setError(
-        "Unable to load application readiness. Please check the backend API."
+        "Unable to load businesses."
       );
 
     } finally {
+
       setLoading(false);
+
     }
+
+  }
+
+
+  async function loadReadiness(
+    businessId: string
+  ) {
+
+    if (!businessId) {
+
+      setReadiness(null);
+
+      return;
+
+    }
+
+    try {
+
+      setLoadingReadiness(true);
+
+      setError("");
+
+      const data =
+        await getDocumentReadiness(
+          businessId
+        );
+
+      setReadiness(data);
+
+    } catch (error) {
+
+      console.error(error);
+
+      setError(
+        "Unable to load application readiness."
+      );
+
+    } finally {
+
+      setLoadingReadiness(false);
+
+    }
+
   }
 
 
   useEffect(() => {
-    loadReadiness();
+
+    loadBusinesses();
+
   }, []);
 
 
-  async function updateDocument(
-    documentId: string,
-    completed: boolean
-  ) {
-    try {
-      const response = await fetch(
-        `${API_URL}/api/readiness/${businessId}/documents/${documentId}?completed=${completed}`,
-        {
-          method: "PATCH",
-        }
-      );
+  const selectedBusiness =
+    businesses.find(
+      (business) =>
+        business.id ===
+        selectedBusinessId
+    );
 
-      if (!response.ok) {
-        throw new Error(
-          "Unable to update document status."
-        );
-      }
 
-      await loadReadiness();
+  const readinessLabel = () => {
 
-    } catch (error) {
-      console.error(error);
-
-      alert(
-        "Unable to update document status."
-      );
+    if (!readiness) {
+      return "Not Started";
     }
-  }
+
+    if (
+      readiness.readiness_percentage === 100
+    ) {
+      return "Ready";
+    }
+
+    if (
+      readiness.readiness_percentage >= 50
+    ) {
+      return "In Progress";
+    }
+
+    if (
+      readiness.readiness_percentage > 0
+    ) {
+      return "Getting Started";
+    }
+
+    return "Not Started";
+
+  };
 
 
   if (loading) {
+
     return (
+
       <main className="readiness-page">
+
         <div className="readiness-loading">
-          Loading application readiness...
+
+          Loading businesses...
+
         </div>
+
       </main>
+
     );
+
   }
 
 
   return (
+
     <main className="readiness-page">
 
-      {/* Header */}
+      {/* HERO */}
 
       <section className="readiness-hero">
 
         <div>
 
           <p className="section-eyebrow">
+
             APPLICATION READINESS
+
           </p>
 
           <h1>
+
             Are You Ready to Apply?
+
           </h1>
 
           <p>
-            Track your document preparation and understand
-            how ready your business is for the next stage
-            of the application process.
+
+            Track your document preparation and
+            understand how ready your business is
+            for the next stage of its industrial
+            journey.
+
           </p>
 
         </div>
@@ -151,18 +230,25 @@ export default function ReadinessPage() {
         <div className="readiness-hero-card">
 
           <div className="readiness-icon">
+
             ✓
+
           </div>
+
 
           <div>
 
             <strong>
+
               Smart Readiness Tracking
+
             </strong>
 
             <p>
-              See what is complete and what still needs
-              preparation.
+
+              See what is complete and what
+              still needs preparation.
+
             </p>
 
           </div>
@@ -172,327 +258,290 @@ export default function ReadinessPage() {
       </section>
 
 
+      {/* BUSINESS SELECTOR */}
+
+      <section className="readiness-business-selector">
+
+        <div>
+
+          <label>
+
+            Select Business Profile
+
+          </label>
+
+          <select
+            value={selectedBusinessId}
+            onChange={(event) => {
+
+              const businessId =
+                event.target.value;
+
+              setSelectedBusinessId(
+                businessId
+              );
+
+              loadReadiness(
+                businessId
+              );
+
+            }}
+          >
+
+            <option value="">
+
+              Select your business
+
+            </option>
+
+
+            {businesses.map(
+              (business) => (
+
+                <option
+                  key={business.id}
+                  value={business.id}
+                >
+
+                  {business.name}
+
+                </option>
+
+              )
+            )}
+
+          </select>
+
+        </div>
+
+      </section>
+
+
       {error && (
 
         <div className="readiness-error">
+
           {error}
+
         </div>
 
       )}
 
 
-      {data && (
+      {!selectedBusinessId && (
 
-        <>
+        <section className="readiness-empty-state">
 
-          {/* Overall Readiness */}
+          <div className="empty-state-icon">
 
-          <section className="overall-readiness-card">
+            📊
 
-            <div className="overall-readiness-content">
+          </div>
+
+          <h2>
+
+            Select a Business
+
+          </h2>
+
+          <p>
+
+            Choose a business profile to view
+            its document readiness and
+            preparation progress.
+
+          </p>
+
+        </section>
+
+      )}
+
+
+      {loadingReadiness && (
+
+        <div className="readiness-loading">
+
+          Calculating application readiness...
+
+        </div>
+
+      )}
+
+
+      {readiness &&
+        selectedBusiness &&
+        !loadingReadiness && (
+
+          <>
+
+            {/* OVERALL READINESS */}
+
+            <section className="overall-readiness-card">
+
+              <div className="overall-readiness-content">
+
+                <div>
+
+                  <p className="section-eyebrow">
+
+                    OVERALL APPLICATION READINESS
+
+                  </p>
+
+                  <h2>
+
+                    {selectedBusiness.name}
+
+                  </h2>
+
+                  <p>
+
+                    Complete the remaining
+                    documents to improve your
+                    application preparation.
+
+                  </p>
+
+                </div>
+
+
+                <div className="readiness-score">
+
+                  <strong>
+
+                    {readiness.readiness_percentage}%
+
+                  </strong>
+
+                  <span>
+
+                    {readinessLabel()}
+
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <div className="large-progress-bar">
+
+                <div
+                  className="large-progress-fill"
+                  style={{
+
+                    width:
+                      `${readiness.readiness_percentage}%`,
+
+                  }}
+                />
+
+              </div>
+
+
+              <div className="readiness-stats">
+
+                <div className="readiness-stat">
+
+                  <strong>
+
+                    {readiness.total_documents}
+
+                  </strong>
+
+                  <span>
+
+                    Total Documents
+
+                  </span>
+
+                </div>
+
+
+                <div className="readiness-stat success">
+
+                  <strong>
+
+                    {readiness.completed_documents}
+
+                  </strong>
+
+                  <span>
+
+                    Prepared
+
+                  </span>
+
+                </div>
+
+
+                <div className="readiness-stat danger">
+
+                  <strong>
+
+                    {readiness.missing_documents}
+
+                  </strong>
+
+                  <span>
+
+                    Missing
+
+                  </span>
+
+                </div>
+
+              </div>
+
+            </section>
+
+
+            {/* READINESS EXPLANATION */}
+
+            <section className="readiness-next-step">
 
               <div>
 
                 <p className="section-eyebrow">
-                  OVERALL APPLICATION READINESS
+
+                  NEXT STEP
+
                 </p>
 
                 <h2>
-                  Your Business Preparation Progress
+
+                  Continue preparing your business
+
                 </h2>
 
                 <p>
-                  Complete the remaining documents to
-                  improve your application readiness.
-                </p>
 
-              </div>
+                  Review your document checklist
+                  and update the preparation
+                  status of each required item.
 
-
-              <div className="readiness-score">
-
-                <strong>
-                  {data.overall_readiness}%
-                </strong>
-
-                <span>
-                  Ready
-                </span>
-
-              </div>
-
-            </div>
-
-
-            <div className="large-progress-bar">
-
-              <div
-                className="large-progress-fill"
-                style={{
-                  width:
-                    `${data.overall_readiness}%`,
-                }}
-              />
-
-            </div>
-
-
-            <div className="readiness-stats">
-
-              <div className="readiness-stat">
-
-                <strong>
-                  {data.total_requirements}
-                </strong>
-
-                <span>
-                  Total Requirements
-                </span>
-
-              </div>
-
-
-              <div className="readiness-stat success">
-
-                <strong>
-                  {data.ready_requirements}
-                </strong>
-
-                <span>
-                  Ready
-                </span>
-
-              </div>
-
-
-              <div className="readiness-stat warning">
-
-                <strong>
-                  {data.in_progress_requirements}
-                </strong>
-
-                <span>
-                  In Progress
-                </span>
-
-              </div>
-
-
-              <div className="readiness-stat danger">
-
-                <strong>
-                  {data.missing_documents}
-                </strong>
-
-                <span>
-                  Missing Documents
-                </span>
-
-              </div>
-
-            </div>
-
-          </section>
-
-
-          {/* Requirement Readiness */}
-
-          <section className="requirement-readiness-section">
-
-            <div className="readiness-section-heading">
-
-              <div>
-
-                <p className="section-eyebrow">
-                  REQUIREMENT-WISE PROGRESS
-                </p>
-
-                <h2>
-                  Application Preparation Status
-                </h2>
-
-                <p>
-                  Review each requirement and complete
-                  the remaining preparation items.
                 </p>
 
               </div>
 
 
               <Link
-                href="/requirements"
-                className="secondary-button"
+                href="/documents"
+                className="primary-button"
               >
-                View Requirements →
+
+                Manage Documents →
+
               </Link>
 
-            </div>
+            </section>
 
+          </>
 
-            <div className="readiness-requirements-list">
-
-              {data.requirements.map(
-                (requirement) => (
-
-                  <article
-                    className="readiness-requirement-card"
-                    key={
-                      requirement.requirement_id
-                    }
-                  >
-
-                    <div className="requirement-readiness-header">
-
-                      <div>
-
-                        <h3>
-                          {
-                            requirement.requirement_name
-                          }
-                        </h3>
-
-                        <span
-                          className={`readiness-status ${
-                            requirement.status
-                              .toLowerCase()
-                              .replace(
-                                " ",
-                                "-"
-                              )
-                          }`}
-                        >
-                          {requirement.status}
-                        </span>
-
-                      </div>
-
-
-                      <div className="small-readiness-score">
-
-                        <strong>
-                          {
-                            requirement.readiness_percentage
-                          }%
-                        </strong>
-
-                        <span>
-                          Complete
-                        </span>
-
-                      </div>
-
-                    </div>
-
-
-                    <div className="small-progress-bar">
-
-                      <div
-                        className="small-progress-fill"
-                        style={{
-                          width:
-                            `${requirement.readiness_percentage}%`,
-                        }}
-                      />
-
-                    </div>
-
-
-                    <div className="document-checklist">
-
-                      <h4>
-                        Document Checklist
-                      </h4>
-
-
-                      {requirement.documents.map(
-                        (document) => (
-
-                          <label
-                            className={`document-item ${
-                              document.completed
-                                ? "completed"
-                                : ""
-                            }`}
-                            key={document.id}
-                          >
-
-                            <input
-                              type="checkbox"
-                              checked={
-                                document.completed
-                              }
-                              onChange={(event) =>
-                                updateDocument(
-                                  document.id,
-                                  event.target.checked
-                                )
-                              }
-                            />
-
-                            <span className="custom-checkbox">
-                              {document.completed
-                                ? "✓"
-                                : ""}
-                            </span>
-
-                            <span>
-                              {document.name}
-                            </span>
-
-                          </label>
-
-                        )
-                      )}
-
-                    </div>
-
-                  </article>
-
-                )
-              )}
-
-            </div>
-
-          </section>
-
-
-          {/* Next Step */}
-
-          <section className="readiness-next-step">
-
-            <div>
-
-              <p className="section-eyebrow">
-                NEXT STEP
-              </p>
-
-              <h2>
-                Continue preparing your business
-              </h2>
-
-              <p>
-                Complete the remaining documents and
-                review applicable requirements before
-                proceeding with official application
-                processes.
-              </p>
-
-            </div>
-
-
-            <Link
-              href="/requirements"
-              className="primary-button"
-            >
-              Review Requirements →
-            </Link>
-
-          </section>
-
-        </>
-
-      )}
+        )}
 
     </main>
+
   );
+
 }
