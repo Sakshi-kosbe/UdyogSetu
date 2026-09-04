@@ -32,10 +32,17 @@ async def get_all_compliance_records():
 async def create_compliance_record(
     compliance: ComplianceCreate,
 ):
+    """
+    Create a new compliance record.
+    """
 
     result = await create_new_compliance(
         business_id=compliance.business_id,
-        compliance_name=compliance.compliance_name,
+
+        # Schema uses 'title', while the existing service
+        # currently expects 'compliance_name'.
+        compliance_name=compliance.title,
+
         description=compliance.description,
         due_date=compliance.due_date,
         renewal_date=compliance.renewal_date,
@@ -75,7 +82,6 @@ async def get_business_compliance(
 async def get_compliance_record(
     compliance_id: str,
 ):
-
     compliance = await get_compliance(
         compliance_id
     )
@@ -89,12 +95,13 @@ async def get_compliance_record(
     return compliance
 
 
-@router.patch("/{compliance_id}/status")
-async def update_status(
+# This route supports your frontend:
+# PUT /api/v1/compliance/{id}
+@router.put("/{compliance_id}")
+async def update_compliance_status(
     compliance_id: str,
     status_update: ComplianceStatusUpdate,
 ):
-
     result = await change_compliance_status(
         compliance_id,
         status_update.status,
@@ -106,7 +113,33 @@ async def update_status(
             detail="Compliance record not found.",
         )
 
-    if "error" in result:
+    if isinstance(result, dict) and "error" in result:
+        raise HTTPException(
+            status_code=400,
+            detail=result["error"],
+        )
+
+    return result
+
+
+# Alternative status-specific endpoint
+@router.patch("/{compliance_id}/status")
+async def update_status(
+    compliance_id: str,
+    status_update: ComplianceStatusUpdate,
+):
+    result = await change_compliance_status(
+        compliance_id,
+        status_update.status,
+    )
+
+    if result is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Compliance record not found.",
+        )
+
+    if isinstance(result, dict) and "error" in result:
         raise HTTPException(
             status_code=400,
             detail=result["error"],
@@ -119,7 +152,6 @@ async def update_status(
 async def delete_compliance_record(
     compliance_id: str,
 ):
-
     deleted = await remove_compliance(
         compliance_id
     )

@@ -24,6 +24,10 @@ export default function HomePage() {
 
             <Link href="/requirements">Requirements</Link>
 
+            <Link href="/documents">Documents</Link>
+
+      
+
             <Link href="/compliance">Compliance</Link>
 
             <Link href="/schemes">Schemes</Link>

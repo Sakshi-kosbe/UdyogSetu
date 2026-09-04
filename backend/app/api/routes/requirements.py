@@ -13,16 +13,21 @@ router = APIRouter(
 )
 
 
-def serialize_requirement(requirement: dict) -> dict:
+def serialize_document(document: dict) -> dict:
     """Convert MongoDB document into JSON-safe response."""
 
-    requirement = dict(requirement)
+    document = dict(document)
 
-    requirement["id"] = str(
-        requirement.pop("_id", "")
-    )
+    if "_id" in document:
+        document["id"] = str(document.pop("_id"))
 
-    return requirement
+    return document
+
+
+def serialize_requirement(requirement: dict) -> dict:
+    """Convert requirement document into JSON-safe response."""
+
+    return serialize_document(requirement)
 
 
 @router.get("/")
@@ -59,13 +64,52 @@ async def get_requirements(
     ]
 
 
+@router.post("/discover/{business_id}")
+async def discover_requirements(
+    business_id: str,
+):
+    """
+    Discover potentially applicable requirements
+    for a selected business.
+    """
+
+    if not ObjectId.is_valid(business_id):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid business ID",
+        )
+
+    businesses_collection = mongodb.database["businesses"]
+
+    business = await businesses_collection.find_one(
+        {
+            "_id": ObjectId(business_id)
+        }
+    )
+
+    if not business:
+        raise HTTPException(
+            status_code=404,
+            detail="Business not found",
+        )
+
+    requirements = await get_applicable_requirements(
+        business
+    )
+
+    return [
+        serialize_requirement(requirement)
+        for requirement in requirements
+    ]
+
+
 @router.post("/evaluate")
 async def evaluate_requirements(
     business: dict,
 ):
     """
-    Evaluate a business against active regulatory rules
-    and return the applicable requirements.
+    Evaluate a complete business object against
+    active regulatory rules.
     """
 
     requirements = await get_applicable_requirements(
@@ -86,13 +130,13 @@ async def get_requirement(
     Get a single regulatory requirement by MongoDB ObjectId.
     """
 
-    collection = mongodb.database["requirements"]
-
     if not ObjectId.is_valid(requirement_id):
         raise HTTPException(
             status_code=400,
             detail="Invalid requirement ID",
         )
+
+    collection = mongodb.database["requirements"]
 
     requirement = await collection.find_one(
         {
