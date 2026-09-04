@@ -26,4 +26,4 @@ def test_requirement_discovery_business_not_found():
             "/api/v1/businesses/000000000000000000000000/requirements"
         )
 
-        assert response.status_code == 404  
+        assert response.status_code == 404
