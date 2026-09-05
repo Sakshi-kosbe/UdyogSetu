@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
 
-    MONGODB_URL: str = "MONGODB_URI=mongodb+srv://udyogsetu:UdyogSetu89@cluster0.usdsf3d.mongodb.net/udyogsetu"
+    MONGODB_URL: str = "mongodb+srv://udyogsetu:UdyogSetu89@cluster0.usdsf3d.mongodb.net/udyogsetu"
     MONGODB_DB_NAME: str = "udyogsetu"
 
     FRONTEND_ORIGINS: str = "http://localhost:3000,https://udyog-setu-two.vercel.app/"
